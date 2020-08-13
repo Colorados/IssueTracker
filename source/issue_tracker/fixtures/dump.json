@@ -1,0 +1,73 @@
+[
+{
+  "model": "issue_tracker.issues",
+  "pk": 1,
+  "fields": {
+    "summary": "Attempt #1",
+    "description": "Trying to create an issue",
+    "status": 1,
+    "type": 1,
+    "created_at": "2020-08-13T08:24:12.141Z"
+  }
+},
+{
+  "model": "issue_tracker.status",
+  "pk": 1,
+  "fields": {
+    "status_name": "New"
+  }
+},
+{
+  "model": "issue_tracker.status",
+  "pk": 2,
+  "fields": {
+    "status_name": "In-Progress"
+  }
+},
+{
+  "model": "issue_tracker.status",
+  "pk": 3,
+  "fields": {
+    "status_name": "Done"
+  }
+},
+{
+  "model": "issue_tracker.type",
+  "pk": 1,
+  "fields": {
+    "type_name": "Bug"
+  }
+},
+{
+  "model": "issue_tracker.type",
+  "pk": 2,
+  "fields": {
+    "type_name": "Task"
+  }
+},
+{
+  "model": "issue_tracker.type",
+  "pk": 3,
+  "fields": {
+    "type_name": "Enhancement"
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$150000$EHe0mwYHjbJW$xBGxI0KA51zz9e2tEhcmQwlX/PSpeecJF+y8D4BvI2U=",
+    "last_login": "2020-08-13T08:18:56.334Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2020-08-13T08:18:48.186Z",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]
