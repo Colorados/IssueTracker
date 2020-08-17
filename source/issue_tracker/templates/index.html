@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Hi, there{% endblock %}
+
+{% block content %}
+<h1>Задачи</h1>
+    {% for issue in issues %}
+        <h3><a href="{% url 'issue_view' issue.pk %}">{{ issue.summary }}</a></h3>
+        <p>Статус: {{ issue.status.status_name }}</p>
+        <p>Описание: {{ issue.description }}</p>
+        <p>Дата создания: {{ issue.created_at|date:'d.m.Y H:i:s' }}</p>
+        <p><a href="{% url 'issue_edit' issue.pk %}" class="btn">EDIT</a></p>
+        <p><a href="{% url 'issue_delete' issue.pk %}" class="btn">DELETE</a></p>
+    {% endfor %}
+{% endblock %}
