@@ -11,5 +11,6 @@
     <h1>New Issue:</h1>
     <h2>{{ issue.summary }}</h2>
     <p class="pre">{{ issue.description }}</p>
+    <p>Types: {% for type in issue.types.all  %}{{ type.type_name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
     <p>Date: {{ issue.created_at|date:'d.m.Y H:i:s' }}</p>
 {% endblock %}
