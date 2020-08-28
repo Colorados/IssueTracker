@@ -29,13 +29,7 @@ class IssueCreateView(CustomFormView):
     form_class = IssueForm
 
     def form_valid(self, form):
-        data = {}
-        types = form.cleaned_data.pop('type')
-        for key, value in form.cleaned_data.items():
-            if value is not None:
-                data[key] = value
-        self.issue = Issues.objects.create(**data)
-        self.issue.types.set(types)
+        self.issue = form.save()
         return super().form_valid(form)
 
     def get_redirect_url(self):
@@ -54,20 +48,13 @@ class IssueEditView(FormView):
         context['issue'] = self.issue
         return context
 
-    def get_initial(self):
-        initial = {}
-        for key in 'summary', 'description', 'status', 'types':
-            initial[key] = getattr(self.issue, key)
-        initial['created_at'] = self.issue.created_at.strftime('H:i:s')
-        return initial
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['instance'] = self.issue
+        return kwargs
 
     def form_valid(self, form):
-        types = form.cleaned_data.pop('type')
-        for key, value in form.cleaned_data.items():
-            if value is not None:
-                setattr(self.issue, key, value)
-        self.issue.save()
-        self.issue.types.set(types)
+        self.issue = form.save()
         return super().form_valid(form)
 
     def get_success_url(self):
