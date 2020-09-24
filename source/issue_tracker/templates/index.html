@@ -4,6 +4,9 @@
 
 {% block content %}
 <h1>Задачи</h1>
+    {% if is_paginated %}
+        {% include 'partial/pagination.html' %}
+    {% endif %}
     {% for issue in issues %}
         <h3><a href="{% url 'issue_view' issue.pk %}">{{ issue.summary }}</a></h3>
         <p>Статус: {{ issue.status.status_name }}</p>
@@ -12,4 +15,7 @@
         <p><a href="{% url 'issue_edit' issue.pk %}" class="btn">EDIT</a></p>
         <p><a href="{% url 'issue_delete' issue.pk %}" class="btn">DELETE</a></p>
     {% endfor %}
+    {% if is_paginated %}
+        {% include 'partial/pagination.html' %}
+    {% endif %}
 {% endblock %}
