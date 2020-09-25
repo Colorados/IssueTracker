@@ -1,5 +1,5 @@
 from django import forms
-from .models import Issues
+from .models import Issues, Project
 
 
 class IssueForm(forms.ModelForm):
@@ -13,3 +13,9 @@ class IssueForm(forms.ModelForm):
 
 class SimpleSearchForm(forms.Form):
     search = forms.CharField(max_length=100, required=False, label='Search')
+
+
+class ProjectForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = ['title', 'specification', 'launch_date', 'end_date']
