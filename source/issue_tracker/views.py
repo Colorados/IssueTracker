@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.views.generic import TemplateView, FormView, ListView, DetailView, CreateView
 from .base_views import FormView as CustomFormView
 from .models import Issues, Project
-from .forms import IssueForm, SimpleSearchForm, ProjectForm
+from .forms import IssueForm, SimpleSearchForm, ProjectForm, ProjectIssueForm
 from django.db.models import Q
 
 
@@ -108,3 +108,17 @@ class ProjectCreateView(CreateView):
     template_name = 'projects/project_create.html'
     model = Project
     form_class = ProjectForm
+
+
+class ProjectIssueCreateView(CreateView):
+    model = Issues
+    template_name = 'projects/project_issue_create.html'
+    form_class = ProjectIssueForm
+
+    def form_valid(self, form):
+        project = get_object_or_404(Project, pk=self.kwargs.get('pk'))
+        issue = form.save(commit=False)
+        issue.project = project
+        issue.save()
+        form.save_m2m()
+        return redirect('project_detail', pk=project.pk)
