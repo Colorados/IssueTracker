@@ -1,15 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseNotAllowed
 from django.urls import reverse
-from django.views.generic import View, TemplateView, FormView, ListView
+from django.views.generic import TemplateView, FormView, ListView, DetailView, CreateView
 from .base_views import FormView as CustomFormView
-from .models import Issues
-from .forms import IssueForm, SimpleSearchForm
+from .models import Issues, Project
+from .forms import IssueForm, SimpleSearchForm, ProjectForm
 from django.db.models import Q
 
 
 class IndexView(ListView):
-    template_name = 'index.html'
+    template_name = 'issues/index.html'
     context_object_name = 'issues'
     paginate_by = 10
     paginate_orphans = 0
@@ -32,7 +32,7 @@ class IndexView(ListView):
         return data.order_by('-created_at')
 
 class IssueView(TemplateView):
-    template_name = 'issue_view.html'
+    template_name = 'issues/issue_view.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -43,7 +43,7 @@ class IssueView(TemplateView):
 
 
 class IssueCreateView(CustomFormView):
-    template_name = 'issue_create.html'
+    template_name = 'issues/issue_create.html'
     form_class = IssueForm
 
     def form_valid(self, form):
@@ -54,7 +54,7 @@ class IssueCreateView(CustomFormView):
         return reverse('issue_view', kwargs={'pk': self.issue.pk})
 
 class IssueEditView(FormView):
-    template_name = 'issue_edit.html'
+    template_name = 'issues/issue_edit.html'
     form_class = IssueForm
 
     def dispatch(self, request, *args, **kwargs):
@@ -85,10 +85,26 @@ class IssueEditView(FormView):
 def issue_delete_view(request, pk):
     issue = get_object_or_404(Issues, pk=pk)
     if request.method == 'GET':
-        return render(request, 'issue_delete.html', context={'issue': issue})
+        return render(request, 'issues/issue_delete.html', context={'issue': issue})
     elif request.method == 'POST':
         issue.delete()
         return redirect('home')
     else:
         return HttpResponseNotAllowed(permitted_methods=['GET', 'POST'])
 
+
+class ProjectsListView(ListView):
+    template_name = 'projects/project_list_view.html'
+    model = Project
+    context_object_name = 'projects'
+
+
+class ProjectDetailView(DetailView):
+    template_name = 'projects/project_detail.html'
+    model = Project
+
+
+class ProjectCreateView(CreateView):
+    template_name = 'projects/project_create.html'
+    model = Project
+    form_class = ProjectForm
