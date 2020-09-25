@@ -4,6 +4,9 @@ from django.db import models
 
 
 class Issues(models.Model):
+    project = models.ForeignKey('issue_tracker.Project', null=False, blank=False, related_name='projects',
+                                on_delete=models.PROTECT,
+                                verbose_name='Проект')
     summary = models.CharField(max_length=200, null=False, blank=False, verbose_name='Краткое описание',
                                validators=[MaxLengthValidator(15)])
     description = models.TextField(max_length=1000, null=True, blank=True, verbose_name='Полное описание',
@@ -42,3 +45,10 @@ class Type(models.Model):
     class Meta:
         verbose_name = 'Тип'
         verbose_name_plural = 'Типы'
+
+
+class Project(models.Model):
+    title = models.CharField(max_length=50, null=False, blank=False, verbose_name='Название проекта')
+    specification = models.TextField(max_length=100, null=False, blank=False, verbose_name='Описание проекта')
+    launch_date = models.DateField(verbose_name='Дата начала')
+    end_date = models.DateField(verbose_name='Дата окончания', null=True, blank=True)
