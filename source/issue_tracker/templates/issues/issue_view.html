@@ -3,8 +3,8 @@
 {% block title %}View{% endblock %}
 
 {% block menu %}
-    <li><a href="{% url 'issue_edit' issue.pk %}">EDIT</a></li>
-    <li><a href="{% url 'issue_delete' issue.pk %}">DELETE</a></li>
+    <li><a href="{% url 'issue_tracker:issue_edit' issue.pk %}">EDIT</a></li>
+    <li><a href="{% url 'issue_tracker:issue_delete' issue.pk %}">DELETE</a></li>
 {% endblock %}
 
 {% block content %}

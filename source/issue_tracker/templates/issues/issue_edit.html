@@ -3,11 +3,11 @@
 {% block title %}Edit{% endblock %}
 
 {% block meny %}
-    <li><a href="{% url 'issue_view' issue.pk %}">Cancel</a></li>
+    <li><a href="{% url 'issue_tracker:issue_view' issue.pk %}">Cancel</a></li>
 {% endblock %}
 
 {% block content %}
     <h1>Edit an Issue</h1>
-    {% url 'issue_edit' pk=issue.pk as action_url %}
+    {% url 'issue_tracker:issue_edit' pk=issue.pk as action_url %}
     {% include 'partial/form.html' with action_url=action_url form_method='post' button_text='Edit' %}
 {% endblock %}

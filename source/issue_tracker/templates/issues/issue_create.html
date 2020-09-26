@@ -4,6 +4,6 @@
 
 {% block content %}
     <h1>Create New Issue</h1>
-    {% url 'issue_create' as action_url %}
+    {% url 'issue_tracker:issue_create' as action_url %}
     {% include 'partial/form.html' with action_url=action_url form_method='post'%}
 {% endblock %}

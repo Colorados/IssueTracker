@@ -3,9 +3,9 @@
 {% block title %}View{% endblock %}
 
 {% block menu %}
-    <li><a href="{% url 'project_issue_create' project.pk %}">New Issue</a></li>
-    <li><a href="{% url 'project_edit' project.pk %}">Edit Project</a></li>
-    <li><a href="{% url 'project_delete' project.pk %}">Delete Project</a></li>
+    <li><a href="{% url 'issue_tracker:project_issue_create' project.pk %}">New Issue</a></li>
+    <li><a href="{% url 'issue_tracker:project_edit' project.pk %}">Edit Project</a></li>
+    <li><a href="{% url 'issue_tracker:project_delete' project.pk %}">Delete Project</a></li>
 {% endblock %}
 
 {% block content %}
