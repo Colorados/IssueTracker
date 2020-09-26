@@ -48,13 +48,13 @@ class IssueEditView(LoginRequiredMixin, UpdateView):
     model = Issues
 
     def get_success_url(self):
-        return reverse('issue_view', kwargs={'pk': self.object.pk})
+        return reverse('issue_tracker:issue_view', kwargs={'pk': self.object.pk})
 
 
 class IssueDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'issues/issue_delete.html'
     model = Issues
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('issue_tracker:home')
 
     def get(self, request, *args, **kwargs):
         return self.delete(request, *args, **kwargs)
@@ -76,6 +76,9 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
     model = Project
     form_class = ProjectForm
 
+    def get_success_url(self):
+        return reverse('issue_tracker:project_detail', kwargs={'pk': self.object.pk})
+
 
 class ProjectIssueCreateView(CreateView):
     model = Issues
@@ -88,7 +91,7 @@ class ProjectIssueCreateView(CreateView):
         issue.project = project
         issue.save()
         form.save_m2m()
-        return redirect('project_detail', pk=project.pk)
+        return redirect('issue_tracker:project_detail', pk=project.pk)
 
 
 class ProjectEditView(UpdateView):
@@ -97,13 +100,13 @@ class ProjectEditView(UpdateView):
     model = Project
 
     def get_success_url(self):
-        return reverse('project_detail', kwargs={'pk': self.object.pk})
+        return reverse('issue_tracker:project_detail', kwargs={'pk': self.object.pk})
 
 
 class ProjectDeleteView(DeleteView):
     template_name = 'projects/project_delete.html'
     model = Project
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('issue_tracker:home')
 
     def get(self, request, *args, **kwargs):
         return self.delete(request, *args, **kwargs)
