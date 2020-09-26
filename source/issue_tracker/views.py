@@ -99,3 +99,21 @@ class ProjectIssueCreateView(CreateView):
         issue.save()
         form.save_m2m()
         return redirect('project_detail', pk=project.pk)
+
+
+class ProjectEditView(UpdateView):
+    template_name = 'projects/project_edit.html'
+    form_class = ProjectForm
+    model = Project
+
+    def get_success_url(self):
+        return reverse('project_detail', kwargs={'pk': self.object.pk})
+
+
+class ProjectDeleteView(DeleteView):
+    template_name = 'projects/project_delete.html'
+    model = Project
+    success_url = reverse_lazy('home')
+
+    def get(self, request, *args, **kwargs):
+        return self.delete(request, *args, **kwargs)
