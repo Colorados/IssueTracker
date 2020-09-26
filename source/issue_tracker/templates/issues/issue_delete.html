@@ -8,7 +8,7 @@
 
 {% block content %}
     <h1>Are you sure you want to delete "{{ issue.summary }}"?</h1>
-    <form action="{% url 'issue_delete' issue.pk %}" method="post">
+    <form action="{% url 'issue_delete' pk=issue.pk %}" method="post">
         {% csrf_token %}
         <p><input type="submit" value="Yes"></p>
         <p><a href="{% url 'issue_view' issue.pk %}"><input type="button" value="No"></a></p>
