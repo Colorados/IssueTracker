@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}View{% endblock %}
+
+{% block menu %}
+    <li><a href="{% url 'project_issue_create' project.pk %}">New Issue</a></li>
+    <li><a href="{% url 'project_edit' project.pk %}">Edit Project</a></li>
+    <li><a href="{% url 'project_delete' project.pk %}">Delete Project</a></li>
+{% endblock %}
+
+{% block content %}
+    <h1>Project Info:</h1>
+    <p>Title: {{ project.title }}</p>
+    <p class="pre">Specification: {{ project.specification }}</p>
+    <p>Launch Date: {{ project.launch_date|date:'d.m.Y' }}</p>
+    <p>End Date: {{ project.end_date|date:'d.m.Y' }}</p>
+{% endblock %}
