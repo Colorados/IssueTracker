@@ -9,5 +9,7 @@
         <p>Specification: {{ project.specification }}</p>
         <p>Launch Date: {{ project.launch_date|date:'d.m.Y' }}</p>
         <p>End Date: {{ project.end_date|date:'d.m.Y' }}</p>
+        <p><a href="{% url 'project_edit' project.pk %}">Edit Project</a></p>
+        <p><a href="{% url 'project_delete' project.pk %}">Delete Project</a></p>
     {% endfor %}
 {% endblock %}
