@@ -1,10 +1,10 @@
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
-from .base_views import FormView as CustomFormView
 from .models import Issues, Project
 from .forms import IssueForm, SimpleSearchForm, ProjectForm, ProjectIssueForm
 from django.db.models import Q
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class IndexView(ListView):
@@ -30,6 +30,7 @@ class IndexView(ListView):
                 data = data.filter(Q(summary__icontains=search) | Q(description__icontains=search))
         return data.order_by('-created_at')
 
+
 class IssueView(TemplateView):
     template_name = 'issues/issue_view.html'
 
@@ -41,18 +42,7 @@ class IssueView(TemplateView):
         return context
 
 
-class IssueCreateView(CustomFormView):
-    template_name = 'issues/issue_create.html'
-    form_class = IssueForm
-
-    def form_valid(self, form):
-        self.issue = form.save()
-        return super().form_valid(form)
-
-    def get_redirect_url(self):
-        return reverse('issue_view', kwargs={'pk': self.issue.pk})
-
-class IssueEditView(UpdateView):
+class IssueEditView(LoginRequiredMixin, UpdateView):
     template_name = 'issues/issue_edit.html'
     form_class = IssueForm
     model = Issues
@@ -61,7 +51,7 @@ class IssueEditView(UpdateView):
         return reverse('issue_view', kwargs={'pk': self.object.pk})
 
 
-class IssueDeleteView(DeleteView):
+class IssueDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'issues/issue_delete.html'
     model = Issues
     success_url = reverse_lazy('home')
@@ -70,18 +60,18 @@ class IssueDeleteView(DeleteView):
         return self.delete(request, *args, **kwargs)
 
 
-class ProjectsListView(ListView):
+class ProjectsListView(LoginRequiredMixin, ListView):
     template_name = 'projects/project_list_view.html'
     model = Project
     context_object_name = 'projects'
 
 
-class ProjectDetailView(DetailView):
+class ProjectDetailView(LoginRequiredMixin, DetailView):
     template_name = 'projects/project_detail.html'
     model = Project
 
 
-class ProjectCreateView(CreateView):
+class ProjectCreateView(LoginRequiredMixin, CreateView):
     template_name = 'projects/project_create.html'
     model = Project
     form_class = ProjectForm
