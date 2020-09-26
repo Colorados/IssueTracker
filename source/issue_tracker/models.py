@@ -5,7 +5,7 @@ from django.db import models
 
 class Issues(models.Model):
     project = models.ForeignKey('issue_tracker.Project', null=False, blank=False, related_name='projects',
-                                on_delete=models.PROTECT,
+                                on_delete=models.CASCADE,
                                 verbose_name='Проект')
     summary = models.CharField(max_length=200, null=False, blank=False, verbose_name='Краткое описание',
                                validators=[MaxLengthValidator(15)])
