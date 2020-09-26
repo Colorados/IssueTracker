@@ -1,7 +1,6 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponseNotAllowed
-from django.urls import reverse
-from django.views.generic import TemplateView, FormView, ListView, DetailView, CreateView
+from django.shortcuts import redirect, get_object_or_404
+from django.urls import reverse, reverse_lazy
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from .base_views import FormView as CustomFormView
 from .models import Issues, Project
 from .forms import IssueForm, SimpleSearchForm, ProjectForm, ProjectIssueForm
@@ -53,44 +52,22 @@ class IssueCreateView(CustomFormView):
     def get_redirect_url(self):
         return reverse('issue_view', kwargs={'pk': self.issue.pk})
 
-class IssueEditView(FormView):
+class IssueEditView(UpdateView):
     template_name = 'issues/issue_edit.html'
     form_class = IssueForm
-
-    def dispatch(self, request, *args, **kwargs):
-        self.issue = self.get_object()
-        return super().dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['issue'] = self.issue
-        return context
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['instance'] = self.issue
-        return kwargs
-
-    def form_valid(self, form):
-        self.issue = form.save()
-        return super().form_valid(form)
+    model = Issues
 
     def get_success_url(self):
-        return reverse('issue_view', kwargs={'pk': self.issue.pk})
+        return reverse('issue_view', kwargs={'pk': self.object.pk})
 
-    def get_object(self):
-        pk = self.kwargs.get('pk')
-        return get_object_or_404(Issues, pk=pk)
 
-def issue_delete_view(request, pk):
-    issue = get_object_or_404(Issues, pk=pk)
-    if request.method == 'GET':
-        return render(request, 'issues/issue_delete.html', context={'issue': issue})
-    elif request.method == 'POST':
-        issue.delete()
-        return redirect('home')
-    else:
-        return HttpResponseNotAllowed(permitted_methods=['GET', 'POST'])
+class IssueDeleteView(DeleteView):
+    template_name = 'issues/issue_delete.html'
+    model = Issues
+    success_url = reverse_lazy('home')
+
+    def get(self, request, *args, **kwargs):
+        return self.delete(request, *args, **kwargs)
 
 
 class ProjectsListView(ListView):
